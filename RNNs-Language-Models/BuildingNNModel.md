@@ -147,9 +147,9 @@ model.eval()   # disables dropout
 
 Xavier initialization keeps the variance of activations consistent across layers, preventing gradients from exploding or vanishing.
 
-\[
+$$
 \text{Var}(W) = \frac{2}{n_{in} + n_{out}}
-\]
+$$
 
 - Ensures signals and gradients neither shrink nor grow as they pass through layers.
 
