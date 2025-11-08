@@ -13,7 +13,7 @@ Sparsity Problems:
 * add an small alpha to the count for every word in the vocabulary -> smoothing
 * take less word from the condition to guess next words   -> backoff (maybe: "I took a bus during" was never on the data, but "I took a bus" could have been)
 
-## RNN
+## RNN-LM
 Basically apply the same weights repeatedly, for every word.
 Advantages:
 - can process any length input
@@ -26,3 +26,5 @@ Disadvantage:
 - forgets information back-in-time
 
 ![training-rnn](resources/training-rnn.png)
+
+
