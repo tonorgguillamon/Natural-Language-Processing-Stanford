@@ -70,18 +70,18 @@ Every training loop involves the same key steps:
 ## 📉 5. Gradients
 
 - The **gradient** is the derivative of the loss with respect to a parameter:
-  \[
-  \frac{\partial L}{\partial \theta}
-  \]
+$$
+\frac{\partial L}{\partial \theta}
+$$
 
 - It shows how much and in what direction the loss changes if you slightly adjust that parameter.
 
 - The gradient points in the direction of **steepest increase** of loss.  
   Therefore, we move in the **opposite direction** to minimize the loss:
-  \[
-  \theta_{\text{new}} = \theta_{\text{old}} - \eta \nabla_\theta L(\theta)
-  \]
-  where \( \eta \) = learning rate.
+$$
+	heta_{\text{new}} = \theta_{\text{old}} - \eta \nabla_\theta L(\theta)
+$$
+where $\eta$ = learning rate.
 
 ---
 
@@ -89,11 +89,11 @@ Every training loop involves the same key steps:
 
 In a linear transformation:
 
-\[
+$$
 y = W x + b
-\]
+$$
 
-- \( b \) is the **bias**, which shifts the output even if all inputs are zero.  
+ - $b$ is the **bias**, which shifts the output even if all inputs are zero.  
   This allows the model to fit data not passing through the origin.
 
 ---
@@ -110,9 +110,9 @@ It combines **momentum** and **adaptive learning rates** per parameter.
 | β₂ | decay rate for variance of gradients | 0.999 |
 
 ### Update Rule:
-\[
-\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
-\]
+$$
+	heta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
+$$
 
 - **β₁ (momentum)** controls how much past gradients affect the current mean.
   - High β₁ (≈ 0.9): smooths updates, more stable.
