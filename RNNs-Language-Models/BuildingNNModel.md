@@ -81,6 +81,7 @@ $$
 
 - The gradient points in the direction of **steepest increase** of loss.  
   Therefore, we move in the **opposite direction** to minimize the loss:
+
 $$
 \theta_{\text{new}} = \theta_{\text{old}} - \eta \nabla_\theta L(\theta)
 $$
