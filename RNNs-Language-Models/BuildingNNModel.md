@@ -69,18 +69,22 @@ Every training loop involves the same key steps:
 
 ## 📉 5. Gradients
 
+
 - The **gradient** is the derivative of the loss with respect to a parameter:
+
 $$
 \frac{\partial L}{\partial \theta}
 $$
+
 
 - It shows how much and in what direction the loss changes if you slightly adjust that parameter.
 
 - The gradient points in the direction of **steepest increase** of loss.  
   Therefore, we move in the **opposite direction** to minimize the loss:
 $$
-	heta_{\text{new}} = \theta_{\text{old}} - \eta \nabla_\theta L(\theta)
+\theta_{\text{new}} = \theta_{\text{old}} - \eta \nabla_\theta L(\theta)
 $$
+
 where $\eta$ = learning rate.
 
 ---
