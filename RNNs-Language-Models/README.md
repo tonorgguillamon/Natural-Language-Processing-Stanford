@@ -81,3 +81,56 @@ In each word, calculate the attention scores, then obtain the attention distribu
 2. Multiplicative attention. Adding a weight matrix in between. "Bilinear attention". Problem is that the matrix might get really large, since d1xd2.
 3. Reduced-rank multiplicative attention. Takes two skinny matrixes and multiple them together. This way the weigths to learn are smaller. Playing a bit witht the matrix, that architecture would be the same as [skinny1 x d1]T x [skinny2 x d2]
 4. Additive attention. Uses a feed-forward neural net layer.
+
+Attention treats each word's representation as a query to access and incorporate information from a set of values. We can think of attention as performing fuzzy lookup in a key-value store. The query matches all keys softly, to a weight between 0 and 1. The keys' values are multiplied by the weights and summed.
+
+```
+For each word
+    qi = Q xi
+    ki = K xi
+    vi = V xi
+
+where Q, K and V are weight matrices.
+then, comput pairwise similarities between keys and queries; normalize with softmax
+    e_ij = qiT . kj    (multiply queries by the keys)
+    
+    alpha_ij = exp(e_ij) / sum(exp(e_ij))j
+
+Thus,
+
+    output = sum( alpha_ij . vj )j
+```
+
+## Self-attention problems:
+### It does't understand about the indexes of the words (positions)
+We need to encode the order of the sentence in our keys, queries and values. For this we create a new vector, p, which is the position representation of the words.
+So, the position embedding is: x_hat_i = xi + pi
+
+### No non-linearities for deep learning.
+It's all just weighted averages. Fix: add a feed-forward network to post-process each output vector (to each self-attention output).
+
+### Need to ensure we don't look at the future when predicting a sequence
+A solution would be at every timestep change the set of keys and queries to include only past words. However, this is inefficient, cause we cannot parallelize. Unless, we mask out attention to future words by setting attention scores to -infinite
+```
+            | qiT . kj  ---> if j <= i
+    e_ij =  |
+            | -infinite ---> if j > i
+
+    This provokes the softmax to become 0, so now the attention is weighted 0 on the future, therefore we cannot look at it.
+```
+Important: this is only needed for decoders. For encoders, it's good that the model can peek each word and learn all together. So only when we are generating text we will use the mask.
+
+## The Transformer Decoder
+The embeddings and position embeddings are identical.
+We'll replace out self-attention with multi-head self-attention.
+e.g.: attention head 1 attends to entities, attention head 2 attends to syntactically relevant words.
+Each attention head performs attention independently (different Q, K and V matrices) and then the outputs are combined.
+
+It's also computationally efficient: we compute X . Q and then reshape, same for X . K and X . V
+This makes the heads' matrices the same size as the original one. There will be sets (one per each attention head) of pairs of attention scores. Next is softmax, and compute the weighted average with another matrix multiplication.
+
+*Residual connections*: it helps models train better. Usually, we get X_i by passing X_i-1 through the attention layer. With residual connection we sum the original values of X_i-1 to the ones after the attention layer. This way, we only have to learn the residual from the previous layer.
+```
+X_i = X_i-1 + Layer(X_i-1)
+```
+
