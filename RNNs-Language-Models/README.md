@@ -129,8 +129,25 @@ Each attention head performs attention independently (different Q, K and V matri
 It's also computationally efficient: we compute X . Q and then reshape, same for X . K and X . V
 This makes the heads' matrices the same size as the original one. There will be sets (one per each attention head) of pairs of attention scores. Next is softmax, and compute the weighted average with another matrix multiplication.
 
-*Residual connections*: it helps models train better. Usually, we get X_i by passing X_i-1 through the attention layer. With residual connection we sum the original values of X_i-1 to the ones after the attention layer. This way, we only have to learn the residual from the previous layer.
+## Residual connections
+It helps models train better. Usually, we get X_i by passing X_i-1 through the attention layer. With residual connection we sum the original values of X_i-1 to the ones after the attention layer. This way, we only have to learn the residual from the previous layer.
 ```
 X_i = X_i-1 + Layer(X_i-1)
 ```
+### Layer normalization
+It helps to train faster. The idea is to cut down uninformative variation in hidden vector values by normalizing to unit mean and standard deviation within each layer. So the output of the attention layer is a combination of the word vector, the mean of all vectors, the standard deviation and other constant values that help preventing the output from exploting.
 
+To sum up: the transformer decorder is a stack of transformer decoder blocks. Each block consists of:
+- Self-attention (masked multi-head attention)
+- Add & Norm
+- Feed-Forward
+- Add & Norm
+
+## The Transformer Encoder
+It constrains to unidirectional contexts, as for language models. The only difference from Decoder is that we remove the masking in self-attention.
+
+## The Transformer Encoder-Decoder
+Combination of both architectures.
+Encoder gets inputs which are converted into Embeddings, and then pass through the "blocks", which eventually returns values which are fed into the Multi-Head Attention layer of the Decoder. This is called cross-attention.
+
+![decoder-encoder](resources/encoder-decoder.png)
